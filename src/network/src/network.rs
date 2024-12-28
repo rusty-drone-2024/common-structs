@@ -1,9 +1,9 @@
-use std::collections::HashMap;
+use crate::info::NodeInfo;
 use crossbeam_channel::{Receiver, Sender};
+use leaf::LeafPacketSentEvent;
+use std::collections::HashMap;
 use wg_2024::controller::DroneEvent;
 use wg_2024::network::NodeId;
-use leaf::LeafPacketSentEvent;
-use crate::info::NodeInfo;
 
 #[allow(dead_code)]
 pub struct Network {
