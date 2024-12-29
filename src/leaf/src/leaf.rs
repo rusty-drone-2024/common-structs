@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use wg_2024::network::NodeId;
 use wg_2024::packet::Packet;
 
-pub trait Leaf {
+pub trait Leaf: Send {
     fn new(
         id: NodeId,
         controller_send: Sender<LeafPacketSentEvent>,
