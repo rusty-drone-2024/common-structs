@@ -4,6 +4,7 @@ use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
 
 //TODO Test flag
 #[derive(Debug, Clone, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
 pub enum Message {
     // C -> S
     ReqServerType,
@@ -33,6 +34,7 @@ pub enum Message {
 }
 
 #[derive(Debug, Clone, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
 pub enum ServerType {
     chat_server,
     is_text_server,
@@ -40,6 +42,7 @@ pub enum ServerType {
 }
 
 #[derive(Debug, Clone, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
 pub struct FileWithMedia{
     file: Vec<u8>,
     related_media_ids: Vec<u64>,
