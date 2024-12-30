@@ -35,9 +35,9 @@ pub enum Message {
 #[derive(Debug, Clone, Hash, Serialize, Deserialize)]
 #[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
 pub enum ServerType {
-    chat_server,
-    is_text_server,
-    is_media_server,
+    Chat,
+    Text,
+    Media,
 }
 
 #[derive(Debug, Clone, Hash, Serialize, Deserialize)]
