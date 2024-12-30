@@ -5,26 +5,31 @@ use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
 //TODO Test flag
 #[derive(Debug, Clone, Hash, Serialize, Deserialize)]
 pub enum Message {
-    // Client -> Server
+    // C -> S
     ReqServerType,
+    // C -> S file
     ReqFilesList,
     ReqFile(u64),
+    // C -> S media
     ReqMedia(u64),
+    // C -> S chat
+    ReqChatRegistration,
+    ReqChatClients,
+    ReqChatSend { to: NodeId, chat_msg: Vec<u8> },
 
-    ReqClientList,
-    ReqMessageSend { to: NodeId, message: Vec<u8> },
-
-    // Server -> Client
+    // S-> C
     RespServerType(ServerType),
-    RespFilesList(Vec<u64>),
-    RespFile(Vec<u8>),
-    RespMedia(Vec<u8>),
     ErrUnsupporedRequestType,
-    ErrRequestedNotFound,
-
+    // S -> C file
+    RespFilesList(Vec<u64>),
+    RespFile(FileWithMedia), 
+    // S -> C media
+    RespMedia(Vec<u8>),
+    ErrNotFound,
+    // S -> C client
     RespClientList(Vec<NodeId>),
-    RespMessageFrom { from: NodeId, message: Vec<u8> },
-    ErrWrongClientId,
+    RespChatFrom { from: NodeId, chat_msg: Vec<u8> },
+    ErrNotExistentClient,
 }
 
 #[derive(Debug, Clone, Hash, Serialize, Deserialize)]
@@ -34,8 +39,14 @@ pub enum ServerType {
     is_media_server,
 }
 
-impl Message {
+#[derive(Debug, Clone, Hash, Serialize, Deserialize)]
+pub struct FileWithMedia{
+    file: Vec<u8>,
+    related_media_ids: Vec<u64>,
+    related_media_server_id: NodeId,
+}
 
+impl Message {
     pub fn into_fragment(self) -> Vec<Fragment>{
         let mut bytes = serde_json::to_vec(&self).unwrap();
         let len_multiple = bytes.len().div_ceil(FRAGMENT_DSIZE) * FRAGMENT_DSIZE;
