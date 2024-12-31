@@ -6,3 +6,9 @@ edition = "2021"
 [dependencies]
 leaf = { path = "src/leaf" }
 network = { path = "src/network" }
+message = { path = "src/message" }
+
+[features]
+eq = [
+    "message/eq"
+]
