@@ -6,7 +6,7 @@ use wg_2024::packet::Packet;
 pub trait Leaf: Send {
     fn new(
         id: NodeId,
-        controller_send: Sender<LeafPacketSentEvent>,
+        controller_send: Sender<LeafEvent>,
         controller_recv: Receiver<LeafCommand>,
         packet_recv: Receiver<Packet>,
         packet_send: HashMap<NodeId, Sender<Packet>>,
@@ -17,9 +17,14 @@ pub trait Leaf: Send {
     fn run(&mut self);
 }
 
-pub type LeafPacketSentEvent = Packet;
+#[derive(Debug, Clone)]
+pub enum  LeafEvent {
+    PacketSend(Packet),
+    // Used expecially for FloodResponse but also 
+    // if all other methods of sending ack/nack fail
+    ControllerShortcut(Packet), 
+}
 
-#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub enum LeafCommand {
     RemoveSender(NodeId),
