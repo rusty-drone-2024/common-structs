@@ -1,6 +1,6 @@
 use crate::info::NodeInfo;
 use crossbeam_channel::{Receiver, Sender};
-use leaf::LeafPacketSentEvent;
+use leaf::LeafEvent;
 use std::collections::HashMap;
 use wg_2024::controller::DroneEvent;
 use wg_2024::network::NodeId;
@@ -15,6 +15,6 @@ pub struct Network {
 pub struct SimulationChannels {
     pub drone_event_listener: Receiver<DroneEvent>,
     pub drone_event_sender: Sender<DroneEvent>,
-    pub leaf_event_listener: Receiver<LeafPacketSentEvent>,
-    pub leaf_event_sender: Sender<LeafPacketSentEvent>,
+    pub leaf_event_listener: Receiver<LeafEvent>,
+    pub leaf_event_sender: Sender<LeafEvent>,
 }
