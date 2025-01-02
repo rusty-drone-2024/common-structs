@@ -18,11 +18,11 @@ pub trait Leaf: Send {
 }
 
 #[derive(Debug, Clone)]
-pub enum  LeafEvent {
+pub enum LeafEvent {
     PacketSend(Packet),
-    // Used expecially for FloodResponse but also 
+    // Used expecially for FloodResponse but also
     // if all other methods of sending ack/nack fail
-    ControllerShortcut(Packet), 
+    ControllerShortcut(Packet),
 }
 
 #[derive(Debug, Clone)]
