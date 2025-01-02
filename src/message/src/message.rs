@@ -1,8 +1,9 @@
+use crate::{FileWithData, ServerType};
 use serde::{Deserialize, Serialize};
 use wg_2024::network::NodeId;
 use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
 
-#[derive(Debug, Clone, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
 pub enum Message {
     // C -> S
@@ -22,7 +23,7 @@ pub enum Message {
     ErrUnsupporedRequestType,
     // S -> C file
     RespFilesList(Vec<u64>),
-    RespFile(FileWithMedia),
+    RespFile(FileWithData),
     // S -> C media
     RespMedia(Vec<u8>),
     ErrNotFound,
@@ -30,22 +31,6 @@ pub enum Message {
     RespClientList(Vec<NodeId>),
     RespChatFrom { from: NodeId, chat_msg: Vec<u8> },
     ErrNotExistentClient,
-}
-
-#[derive(Debug, Clone, Hash, Serialize, Deserialize)]
-#[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
-pub enum ServerType {
-    Chat,
-    Text,
-    Media,
-}
-
-#[derive(Debug, Clone, Hash, Serialize, Deserialize)]
-#[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
-pub struct FileWithMedia {
-    file: Vec<u8>,
-    related_media_ids: Vec<u64>,
-    related_media_server_id: NodeId,
 }
 
 impl Message {
