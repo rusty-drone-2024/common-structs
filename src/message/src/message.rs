@@ -1,4 +1,4 @@
-use crate::{FileWithData, ServerType};
+use crate::{FileWithData, Media, ServerType};
 use serde::{Deserialize, Serialize};
 use wg_2024::network::NodeId;
 use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
@@ -25,7 +25,7 @@ pub enum Message {
     RespFilesList(Vec<u64>),
     RespFile(FileWithData),
     // S -> C media
-    RespMedia(Vec<u8>),
+    RespMedia(Media),
     ErrNotFound,
     // S -> C client
     RespClientList(Vec<NodeId>),
