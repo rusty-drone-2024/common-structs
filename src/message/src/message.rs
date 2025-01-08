@@ -3,8 +3,7 @@ use serde::{Deserialize, Serialize};
 use wg_2024::network::NodeId;
 use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Message {
     // C -> S
     ReqServerType,
