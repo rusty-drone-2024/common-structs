@@ -19,7 +19,7 @@ pub enum Message {
 
     // S-> C
     RespServerType(ServerType),
-    ErrUnsupporedRequestType,
+    ErrUnsupportedRequestType,
     // S -> C file
     RespFilesList(Vec<u64>),
     RespFile(FileWithData),
