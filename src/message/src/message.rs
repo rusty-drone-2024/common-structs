@@ -3,8 +3,7 @@ use serde::{Deserialize, Serialize};
 use wg_2024::network::NodeId;
 use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[cfg_attr(feature = "eq", derive(PartialEq, Eq))]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Message {
     // C -> S
     ReqServerType,
@@ -20,7 +19,7 @@ pub enum Message {
 
     // S-> C
     RespServerType(ServerType),
-    ErrUnsupporedRequestType,
+    ErrUnsupportedRequestType,
     // S -> C file
     RespFilesList(Vec<u64>),
     RespFile(FileWithData),
@@ -34,7 +33,7 @@ pub enum Message {
 }
 
 impl Message {
-    pub fn into_fragment(self) -> Vec<Fragment> {
+    pub fn into_fragments(self) -> Vec<Fragment> {
         let mut bytes = serde_json::to_vec(&self).unwrap();
         let len_multiple = bytes.len().div_ceil(FRAGMENT_DSIZE) * FRAGMENT_DSIZE;
         bytes.resize(len_multiple, 0);
@@ -51,18 +50,31 @@ impl Message {
         res
     }
 
-    pub fn from_fragments_hashmap(mut fragments: Vec<Fragment>) -> Option<Self> {
+    pub fn from_fragments(mut fragments: Vec<Fragment>) -> Result<Self, String> {
         let mut bytes = vec![];
         fragments.sort_by(|a, b| a.fragment_index.cmp(&b.fragment_index));
 
         for (i, el) in fragments.iter().enumerate() {
             if i as u64 != el.fragment_index {
-                return None;
+                return Err("fragment is missing".to_string());
             }
 
-            bytes.extend_from_slice(&el.data);
+            bytes.extend_from_slice(&el.data[0..(el.length as usize)]);
         }
+        serde_json::from_slice(&bytes)
+            .ok()
+            .ok_or("Content is not of correct type".to_string())
+    }
+}
 
-        serde_json::from_slice(&bytes).ok()
+#[cfg(test)]
+mod test {
+    use crate::Message;
+
+    #[test]
+    fn basic_tests() {
+        let message = Message::ReqServerType;
+        let message2 = Message::from_fragments(message.clone().into_fragments());
+        assert_eq!(Ok(message), message2);
     }
 }
