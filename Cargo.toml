@@ -7,3 +7,4 @@ edition = "2021"
 leaf = { path = "src/leaf" }
 network = { path = "src/network" }
 message = { path = "src/message" }
+types = { path = "src/types" }
