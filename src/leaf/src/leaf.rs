@@ -20,7 +20,7 @@ pub trait Leaf: Send {
 #[derive(Debug, Clone)]
 pub enum LeafEvent {
     PacketSend(Packet),
-    // Used expecially for FloodResponse but also
+    // Used especially for FloodResponse but also
     // if all other methods of sending ack/nack fail
     ControllerShortcut(Packet),
 }
@@ -29,5 +29,5 @@ pub enum LeafEvent {
 pub enum LeafCommand {
     RemoveSender(NodeId),
     AddSender(NodeId, Sender<Packet>),
-    Crash,
+    Kill, // Stop blocking the thread on which this leaf is run, used for testing only
 }
