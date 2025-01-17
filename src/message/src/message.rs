@@ -1,4 +1,4 @@
-use crate::{FileWithData, Media, ServerType};
+use crate::{FileWithData, Link, Media, ServerType};
 use serde::{Deserialize, Serialize};
 use wg_2024::network::NodeId;
 use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
@@ -9,9 +9,9 @@ pub enum Message {
     ReqServerType,
     // C -> S file
     ReqFilesList,
-    ReqFile(u64),
+    ReqFile(Link),
     // C -> S media
-    ReqMedia(u64),
+    ReqMedia(Link),
     // C -> S chat
     ReqChatRegistration,
     ReqChatClients,
@@ -21,7 +21,7 @@ pub enum Message {
     RespServerType(ServerType),
     ErrUnsupportedRequestType,
     // S -> C file
-    RespFilesList(Vec<u64>),
+    RespFilesList(Vec<Link>),
     RespFile(FileWithData),
     // S -> C media
     RespMedia(Media),
