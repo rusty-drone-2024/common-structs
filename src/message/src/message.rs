@@ -1,8 +1,8 @@
-use std::fmt::{Display, Formatter};
+use crate::Message::*;
 use crate::{FileWithData, Link, Media, ServerType};
 use serde::{Deserialize, Serialize};
+use std::fmt::{Display, Formatter};
 use wg_2024::network::NodeId;
-use crate::Message::*;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Message {

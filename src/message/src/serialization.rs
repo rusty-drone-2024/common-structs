@@ -1,5 +1,5 @@
-use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
 use crate::Message;
+use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
 
 impl Message {
     pub fn into_fragments(self) -> Vec<Fragment> {
