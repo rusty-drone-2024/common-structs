@@ -1,7 +1,8 @@
+use std::fmt::{Display, Formatter};
 use crate::{FileWithData, Link, Media, ServerType};
 use serde::{Deserialize, Serialize};
 use wg_2024::network::NodeId;
-use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
+use crate::Message::*;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Message {
@@ -32,24 +33,17 @@ pub enum Message {
     ErrNotExistentClient,
 }
 
-impl Message {
-    pub fn into_fragments(self) -> Vec<Fragment> {
-        let mut bytes = serde_json::to_vec(&self).unwrap();
-        let len_multiple = bytes.len().div_ceil(FRAGMENT_DSIZE) * FRAGMENT_DSIZE;
-        bytes.resize(len_multiple, 0);
+impl Display for Message {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let str = match self {
+            ReqChatSend { to, .. } => &format!("ReqChatSend({to}, _)"),
+            RespFile(_) => "RespFile(_)",
+            RespMedia(_) => "RespMedia(_)",
+            RespChatFrom { from, .. } => &format!("RespChatFrom({from}, _)"),
+            other => &format!("{:?}", other),
+        };
 
-        let chunks = bytes.chunks(FRAGMENT_DSIZE);
-        let len = chunks.len();
-        let mut res = vec![];
-
-        chunks.for_each(|chunk| {
-            let fixed_chunk = <[u8; 128]>::try_from(chunk).unwrap();
-            res.push(Fragment::new(res.len() as u64, len as u64, fixed_chunk));
-        });
-
-        res
-    }
-
+        write!(f, "{}", str)
     }
 }
 
