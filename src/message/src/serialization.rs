@@ -1,36 +1,5 @@
-use crate::{FileWithData, Link, Media, ServerType};
-use serde::{Deserialize, Serialize};
-use wg_2024::network::NodeId;
 use wg_2024::packet::{Fragment, FRAGMENT_DSIZE};
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum Message {
-    // C -> S
-    ReqServerType,
-    // C -> S file
-    ReqFilesList,
-    ReqFile(Link),
-    // C -> S media
-    ReqMedia(Link),
-    // C -> S chat
-    ReqChatRegistration,
-    ReqChatClients,
-    ReqChatSend { to: NodeId, chat_msg: Vec<u8> },
-
-    // S-> C
-    RespServerType(ServerType),
-    ErrUnsupportedRequestType,
-    // S -> C file
-    RespFilesList(Vec<Link>),
-    RespFile(FileWithData),
-    // S -> C media
-    RespMedia(Media),
-    ErrNotFound,
-    // S -> C client
-    RespClientList(Vec<NodeId>),
-    RespChatFrom { from: NodeId, chat_msg: Vec<u8> },
-    ErrNotExistentClient,
-}
+use crate::Message;
 
 impl Message {
     pub fn into_fragments(self) -> Vec<Fragment> {
@@ -50,6 +19,20 @@ impl Message {
         res
     }
 
+    pub fn from_fragments(mut fragments: Vec<Fragment>) -> Result<Self, String> {
+        let mut bytes = vec![];
+        fragments.sort_by(|a, b| a.fragment_index.cmp(&b.fragment_index));
+
+        for (i, el) in fragments.iter().enumerate() {
+            if i as u64 != el.fragment_index {
+                return Err("fragment is missing".to_string());
+            }
+
+            bytes.extend_from_slice(&el.data[0..(el.length as usize)]);
+        }
+        serde_json::from_slice(&bytes)
+            .ok()
+            .ok_or("Content is not of correct type".to_string())
     }
 }
 
