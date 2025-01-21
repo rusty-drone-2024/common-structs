@@ -1,4 +1,5 @@
 mod message;
+mod serialization;
 
 pub use message::*;
 use serde::{Deserialize, Serialize};
