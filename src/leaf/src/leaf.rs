@@ -18,6 +18,7 @@ pub trait Leaf: Send {
 }
 
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "debug", derive(PartialEq))]
 pub enum LeafEvent {
     PacketSend(Packet),
     // Used especially for FloodResponse but also
@@ -30,4 +31,18 @@ pub enum LeafCommand {
     RemoveSender(NodeId),
     AddSender(NodeId, Sender<Packet>),
     Kill, // Stop blocking the thread on which this leaf is run, used for testing only
+}
+
+#[cfg(feature = "debug")]
+impl PartialEq for LeafCommand {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (LeafCommand::Kill, LeafCommand::Kill) => true,
+            (LeafCommand::RemoveSender(id1), LeafCommand::RemoveSender(id2)) => id1 == id2,
+            (LeafCommand::AddSender(id1, sen1), LeafCommand::AddSender(id2, sen2)) => {
+                id1 == id2 && sen1.same_channel(sen2)
+            }
+            _ => false,
+        }
+    }
 }

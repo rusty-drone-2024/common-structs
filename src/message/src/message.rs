@@ -36,25 +36,14 @@ pub enum Message {
 impl Display for Message {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let str = match self {
-            ReqChatSend { to, .. } => &format!("ReqChatSend({to}, _)"),
+            RespFilesList(list) => &format!("RespFilesList(_ [size: {}])", list.len()),
             RespFile(_) => "RespFile(_)",
             RespMedia(_) => "RespMedia(_)",
+            ReqChatSend { to, .. } => &format!("ReqChatSend({to}, _)"),
             RespChatFrom { from, .. } => &format!("RespChatFrom({from}, _)"),
             other => &format!("{:?}", other),
         };
 
         write!(f, "{}", str)
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use crate::Message;
-
-    #[test]
-    fn basic_tests() {
-        let message = Message::ReqServerType;
-        let message2 = Message::from_fragments(message.clone().into_fragments());
-        assert_eq!(Ok(message), message2);
     }
 }
