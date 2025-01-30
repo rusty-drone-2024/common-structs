@@ -7,3 +7,6 @@ edition = "2021"
 leaf = { path = "src/leaf" }
 message = { path = "src/message" }
 types = { path = "src/types" }
+
+[features]
+debug = ["leaf/debug"]
