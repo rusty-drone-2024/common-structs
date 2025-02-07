@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use wg_2024::network::NodeId;
 use wg_2024::packet::Packet;
 
+/// Client/Server Node.
 pub trait Leaf: Send {
     fn new(
         id: NodeId,
@@ -20,6 +21,7 @@ pub trait Leaf: Send {
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "debug", derive(PartialEq))]
 pub enum LeafEvent {
+    // A packet has been sent by this leaf
     PacketSend(Packet),
     // Used especially for FloodResponse but also
     // if all other methods of sending ack/nack fail
