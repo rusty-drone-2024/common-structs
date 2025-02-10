@@ -5,6 +5,7 @@ use std::fmt::{Display, Formatter};
 use wg_2024::network::NodeId;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Messages exchanged between servers and clients.
 pub enum Message {
     // C -> S
     ReqServerType,
