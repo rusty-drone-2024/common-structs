@@ -28,10 +28,11 @@ pub enum LeafEvent {
     /// Means that a leaf is trying to send that `Message`
     /// this should be sent before sending any `PacketSend`
     /// relative to that `Message`
-    MessageStartSend(Message),
-    /// Means that a leaf has finished sending a `Message
+    /// `Session` represent the message session_id which is used for all the fragments
+    MessageStartSend(Session, Message),
+    /// Means that a leaf has finished sending a `Message` relative to a `Session`
     /// That happens when the all of its fragment are acked.
-    MessageFullySent(Message),
+    MessageFullySent(Session),
 }
 
 #[derive(Debug, Clone)]
