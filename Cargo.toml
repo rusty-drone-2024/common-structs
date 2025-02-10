@@ -4,9 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-leaf = { path = "src/leaf" }
-message = { path = "src/message" }
-types = { path = "src/types" }
+leaf = { path = "leaf" }
+message = { path = "message" }
+types = { path = "alias_types" }
 
 [features]
 debug = ["leaf/debug"]
