@@ -26,13 +26,18 @@ pub enum LeafEvent {
     // Used especially for FloodResponse but also
     // if all other methods of sending ack/nack fail
     ControllerShortcut(Packet),
-    /// Means that a leaf of `NodeId` given is trying to send that `Message`
-    /// this should be sent before sending any `PacketSend`
-    /// relative to that `Message`
-    /// `Session` represent the message session_id which is used for all the fragments
-    MessageStartSend(NodeId, Session, Message),
-    /// Means that a leafof `NodeId` given has
-    /// finished sending a `Message` relative to a `Session`
+    /// Means that a leaf `start` is trying to send that `Message`
+    /// to `destination`. It contains the `session` represent the `message`
+    /// session_id which is used for all the fragments.
+    /// Notes: this should be sent before sending any `PacketSend` of that `session`
+    MessageStartSend{
+        start: NodeId,
+        session: Session,
+        destination: NodeId,
+        message: Message
+    },
+    /// Means that a leaf of `NodeId` given has finished sending
+    /// a `Message` relative to a `Session`.
     /// That happens when the all of its fragment are acked.
     MessageFullySent(NodeId, Session),
 }
