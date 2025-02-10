@@ -30,11 +30,11 @@ pub enum LeafEvent {
     /// to `destination`. It contains the `session` represent the `message`
     /// session_id which is used for all the fragments.
     /// Notes: this should be sent before sending any `PacketSend` of that `session`
-    MessageStartSend{
+    MessageStartSend {
         start: NodeId,
         session: Session,
         destination: NodeId,
-        message: Message
+        message: Message,
     },
     /// Means that a leaf of `NodeId` given has finished sending
     /// a `Message` relative to a `Session`.
