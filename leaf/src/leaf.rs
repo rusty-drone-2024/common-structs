@@ -1,5 +1,6 @@
 use crossbeam_channel::{Receiver, Sender};
 use std::collections::HashMap;
+use message::Message;
 use wg_2024::network::NodeId;
 use wg_2024::packet::Packet;
 
@@ -24,6 +25,13 @@ pub enum LeafEvent {
     // Used especially for FloodResponse but also
     // if all other methods of sending ack/nack fail
     ControllerShortcut(Packet),
+    /// Means that a leaf is trying to send that `Message`
+    /// this should be sent before sending any `PacketSend`
+    /// relative to that `Message`
+    MessageStartSend(Message),
+    /// Means that a leaf has finished sending a `Message
+    /// That happens when the all of its fragment are acked.
+    MessageFullySent(Message),
 }
 
 #[derive(Debug, Clone)]
