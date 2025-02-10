@@ -1,3 +1,4 @@
+#![warn(clippy::pedantic)]
 use wg_2024::network::SourceRoutingHeader;
 
 /// Type alias for FragmentIndex

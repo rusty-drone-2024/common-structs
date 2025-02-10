@@ -1,10 +1,10 @@
+#![warn(clippy::pedantic)]
 mod message;
 mod serialization;
 
 pub use message::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use wg_2024::network::NodeId;
 
 /// Identifier of a file or media.
 pub type Link = String;
