@@ -1,6 +1,6 @@
 use crossbeam_channel::{Receiver, Sender};
-use std::collections::HashMap;
 use message::Message;
+use std::collections::HashMap;
 use wg_2024::network::NodeId;
 use wg_2024::packet::Packet;
 
