@@ -33,7 +33,7 @@ pub enum LeafEvent {
     MessageStartSend {
         start: NodeId,
         session: Session,
-        destination: NodeId,
+        dest: NodeId,
         message: Message,
     },
     /// Means that a leaf of `NodeId` given has finished sending
