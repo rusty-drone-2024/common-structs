@@ -1,3 +1,4 @@
+#![warn(clippy::pedantic)]
 use wg_2024::network::SourceRoutingHeader;
 
 pub type FragmentIdx = u64;

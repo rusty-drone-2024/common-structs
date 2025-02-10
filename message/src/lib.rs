@@ -1,10 +1,10 @@
+#![warn(clippy::pedantic)]
 mod message;
 mod serialization;
 
 pub use message::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use wg_2024::network::NodeId;
 
 pub type Link = String;
 pub type Media = Vec<u8>;
