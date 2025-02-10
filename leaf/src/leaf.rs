@@ -23,10 +23,10 @@ pub trait Leaf: Send {
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "debug", derive(PartialEq))]
 pub enum LeafEvent {
-    // A packet has been sent by this leaf
+    /// A packet has been sent by this leaf
     PacketSend(Packet),
-    // Used especially for FloodResponse but also
-    // if all other methods of sending ack/nack fail
+    /// Used especially for FloodResponse but also
+    /// if all other methods of sending ack/nack fail
     ControllerShortcut(Packet),
     /// Means that a leaf `start` is trying to send that `Message`
     /// to `destination`. It contains the `session` represent the `message`
@@ -48,7 +48,8 @@ pub enum LeafEvent {
 pub enum LeafCommand {
     RemoveSender(NodeId),
     AddSender(NodeId, Sender<Packet>),
-    Kill, // Stop blocking the thread on which this leaf is run, used for testing only
+    /// Stop blocking the thread on which this leaf is run, used for testing only
+    Kill,
 }
 
 #[cfg(feature = "debug")]

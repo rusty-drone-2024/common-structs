@@ -24,6 +24,6 @@ pub enum ServerType {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct FileWithData {
     pub file: String,
-    // For each link which server to get the file/media from.
+    /// For each link, the server from which to get the file/media from.
     pub related_data: HashMap<Link, ServerUUID>,
 }
